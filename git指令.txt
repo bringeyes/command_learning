@@ -1,0 +1,120 @@
+git init		创建仓库
+rm -rf .git	删除仓库
+git config user.name XXX	设置用户名
+	.email xxx			设置邮箱
+
+
+git status	查看仓库的状态
+git add		添加到暂存区
+	*.txt			添加所有文件后缀为... 的文件
+	.			添加当前文件夹的所有文件
+git commit 	提交
+	-m "第一次提交"	添加提交信息
+	--amend -m "正确的提交信息"	修改最近一次提交的信息
+	-am	同时添加到暂存区和提交到版本库
+
+git rm		同时删除暂存区和工作区当中的文件
+	等同于 rm file; git add file
+	-r * 		递归删除某个目录下的所有子目录和文件
+	--cached 	把文件从暂存区删除，但保留在工作区中
+	注意：删除后不要忘了提交
+git restore	把暂存区的文件恢复到工作区中
+
+
+git ls-files	查看暂存区的内容
+git log		查看提交记录
+	--oneline		简洁的提交记录，只显示ID和提交信息
+	--graph --oneline	图形化显示分支
+alias graph="git log --graph --oneline"		为图形化显示分支创建别名
+git reflog	查看操作的历史记录
+
+
+git reset		回退到某个版本
+	--soft		保留工作区和暂存区的所有内容
+	--hard		丢弃工作区和暂存区的所有内容
+	--mixed		保留工作区，丢弃暂存区（默认参数）
+
+
+git diff			比较工作区和暂存区的差异（查看分支合并冲突的具体内容）
+	HEAD		比较工作区和版本库的差异
+	--cached		比较暂存区和版本库的差异
+	ID1 ID2		比较两个版本库的差异
+	ID1 HEAD	和当前版本库比较
+	HEAD~ HEAD	比较上一个版本和当前版本的差异
+	HEAD~2 HEAD	比较提交之前的第二个版本
+	HEAD^ HEAD	同上
+		xxx.txt	后接文件名，只会查看该文件的差异内容
+
+
+.gitignore		忽略文件
+	*.log
+	temp/		忽略文件夹
+	#xxx			注释
+	!other.log	保留文件
+	/hello.txt		只忽略当前文件夹下的文件，而不忽略子文件夹下的
+	doc/*.txt		忽略文件夹下的文件，而不忽略其子文件夹下的
+	doc/**/*.pdf	忽略doc/及其所有子目录下的.pdf文件
+
+
+git push		推送更新内容
+	-u origin main:main	把本地仓库的main分支推送给远程仓库的main分支
+			如果分支名相同，可以省略:main
+git pull		拉取更新内容
+	origin main 	可以省略
+
+
+git branch xxx	创建一个新的分支
+git branch		查看分支
+	-d xxx		删除已合并分支
+	-D xxx		强制删除分支(未合并)
+	-M main		指定分支的名称为main
+git checkout xxx	切换到分支（如果分支名和文件名相同可能有歧义）
+	-b xxx 244dd35	恢复到该分支的状态
+git switch xxx		切换到分支
+git merge xxx		合并分支到当前分支
+			优点：不会破坏原分支的提交记录，方便回溯和查看。
+			缺点：会产生额外的提交节点，分支图比较复杂。
+git rebase xxx		变基：把当前分支追加合并到xxx分支末端（只追加分叉点后的部分）
+			优点：不会新增额外的提交记录，形成线性历史，更直观干净。
+			缺点：会改变提交历史，改变当前分支的branch out 的节点，避免在共享分支使用。
+			（一般是自己一个人开发，希望提交记录简洁明了时使用）
+
+
+git remote add origin git@github.com:bringeyes/my_code.git		关联远程仓库
+git remote -v		查看当前仓库对应的远程仓库的别名和地址
+
+
+git config --global core.autocrlf true		保留在Windows系统上的CRLF，并让Git在检出时不自动转换
+
+
+Git Flow 模型
+主线/基线分支 main：只接受合并请求，不允许push直接修改
+线上版本bug热修复分支 hotfix：用于解决线上问题。修复完成后合并回 main 分支。更新小版本号
+开发分支 develop：
+功能分支 feature：从开发分支中分离出来，实现某个功能的开发和管理，稳定后合并回 develop 分支
+版本发布分支 release：最新预发布版本的代码，用于发布前的测试和验证，稳定后合并到 main 和 develop 分支，然后删除预发布分支
+
+主要分支：main、develop（长期存在）
+辅助分支：hotfix、feature、release（不定删除）
+
+
+GitHub Flow 模型
+主分支：禁止在主分支上进行提交
+自己分支：从主分支分离，进行开发和测试，在本地分支提交，在开发完成后发起 Pull Request 拉请求（合并请求），团队成员对代码进行评审，如没问题就可以将这个 PR 发布和合并到主分支中
+
+【版本号规则】
+1.0.1
+主版本(Major Version):主要的功能变化或重大更新;
+次版本(Minor Version):一些新的功能、改进和更新，通常不会影响现有功能;
+修订版本:(Patch Version):一些小的bug修复，安全漏洞补丁等。通常不会更改现有功能和接口。
+
+功能分支示例：feature-login-page	根据功能和任务命名
+
+修复分支示例：hotfix-#issueid-desc	根据错误和问题编号命名
+
+
+【分支管理】
+定期合并已经成功验证的分支，及时删除已经合并的分支
+保持合适的分支数量
+为分支设置合适的管理权限
+

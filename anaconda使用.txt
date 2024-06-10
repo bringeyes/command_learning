@@ -1,0 +1,26 @@
+conda info
+conda info --envs	查看环境
+	conda env list
+conda config --add channels https://。。。	添加软件源
+conda config --add envs_dirs D:\anaconda3\envs	添加环境路径
+	注：新添加的路径要修改文件夹权限，不然只有只读
+conda create -n 环境名
+conda activate 环境名
+	activate 环境名
+conda deactivate	退出当前环境
+	source deactivate	linux系统
+conda env remove -n xyq	删除环境
+cls	清屏   
+	conda remove -n 环境名 --all -y	#删除指定环境
+	conda remove 包名称	#删除当前环境的包
+	conda remove -n 环境名 包名称	#删除指定环境中的包
+	conda remove <package_name> --force	# 仅删除包而不删除其依赖
+	
+	conda --version	#获取conda版本
+	conda update conda -y	#更新当前conda版本
+	conda update 包名称 -y	#更新包版本
+	conda update --all或conda upgrade --all	#更新所有包
+	conda create -n 新环境名 --clone 旧环境名	#复制环境
+	exit()	#退出python
+conda config --get	# 下载地址
+
