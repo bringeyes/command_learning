@@ -1,5 +1,4 @@
 dir	显示子文件
-ls	显示子文件
 python --version	查看python版本
 exit()	从终端打开的python退出
 mkdir	创建文件夹
@@ -9,3 +8,6 @@ rm	删除文件
 	del
 echo "这是第一个文件" > file1.txt		写入内容到txt文件中
 					>> file1.txt	追加到文件后面
+
+cl ConsoleApplication1.cpp /d1 reportSingleClassLayoutHero
+
