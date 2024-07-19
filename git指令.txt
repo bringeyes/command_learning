@@ -1,7 +1,15 @@
+1 在gitee或github上面创建中央仓库(创建空仓库)
+2 clone仓库到本地
+3 初始化仓库内容 (添加需求文档、业务流程文档、添加原型图等等)
+4 提交内容到本地仓库
+5 推送本地仓库到远程仓库
+// ————————————
+
 git init		创建仓库
 rm -rf .git	删除仓库
 git config user.name XXX	设置用户名
 	.email xxx			设置邮箱
+	--list	查看设置
 
 
 git status	查看仓库的状态
@@ -20,7 +28,9 @@ git rm		同时删除暂存区和工作区当中的文件
 	注意：删除后不要忘了提交
 git restore	把暂存区的文件恢复到工作区中
 
-
+git mv		移动文件(重命名文件)
+	git mv main1.cpp main2.cpp
+	
 git ls-files	查看暂存区的内容
 git log		查看提交记录
 	--oneline		简洁的提交记录，只显示ID和提交信息
@@ -28,7 +38,7 @@ git log		查看提交记录
 alias graph="git log --graph --oneline"		为图形化显示分支创建别名
 git reflog	查看操作的历史记录
 
-
+// ————————————
 git reset		回退到某个版本
 	--soft		保留工作区和暂存区的所有内容
 	--hard		丢弃工作区和暂存区的所有内容
@@ -55,21 +65,35 @@ git diff			比较工作区和暂存区的差异（查看分支合并冲突的具
 	doc/*.txt		忽略文件夹下的文件，而不忽略其子文件夹下的
 	doc/**/*.pdf	忽略doc/及其所有子目录下的.pdf文件
 
+// ——————远程指令——————
+git remote add <sname> <url> 	关联远程仓库
+			（如 origin git@github.com:bringeyes/my_code.git）
+git remote -v		查看当前仓库对应的远程仓库的别名和地址
+	rename <oname> <nname>		重命名远程仓库
+	remove <sname>		移除远程仓库
+	show <sname>		查看某个远程仓库
 
-git push		推送更新内容
+git push <sname> <branch>	推送更新内容
 	-u origin main:main	把本地仓库的main分支推送给远程仓库的main分支
 			如果分支名相同，可以省略:main
-git pull		拉取更新内容
+git pull <sname> <branch>	拉取并更新工作空间内容
 	origin main 	可以省略
 
+git fetch <sname>	从远程仓库抓取，不影响工作空间
+
+git clone <url>	克隆项目
 
 git branch xxx	创建一个新的分支
 git branch		查看分支
 	-d xxx		删除已合并分支
 	-D xxx		强制删除分支(未合并)
 	-M main		指定分支的名称为main
+
+// ——————————————
 git checkout xxx	切换到分支（如果分支名和文件名相同可能有歧义）
 	-b xxx 244dd35	恢复到该分支的状态
+
+
 git switch xxx		切换到分支
 git merge xxx		合并分支到当前分支
 			优点：不会破坏原分支的提交记录，方便回溯和查看。
@@ -80,21 +104,24 @@ git rebase xxx		变基：把当前分支追加合并到xxx分支末端（只追�
 			（一般是自己一个人开发，希望提交记录简洁明了时使用）
 
 
-git remote add origin git@github.com:bringeyes/my_code.git		关联远程仓库
-git remote -v		查看当前仓库对应的远程仓库的别名和地址
-
-
 git config --global core.autocrlf true		保留在Windows系统上的CRLF，并让Git在检出时不自动转换
 
 
 Git Flow 模型
 主线/基线分支 main：只接受合并请求，不允许push直接修改
 线上版本bug热修复分支 hotfix：用于解决线上问题。修复完成后合并回 main 分支。更新小版本号
-开发分支 develop：
-功能分支 feature：从开发分支中分离出来，实现某个功能的开发和管理，稳定后合并回 develop 分支
-版本发布分支 release：最新预发布版本的代码，用于发布前的测试和验证，稳定后合并到 main 和 develop 分支，然后删除预发布分支
 
-主要分支：main、develop（长期存在）
+(基于main)文档分支 doc：维护项目相关文档（文档开发分支：doc-flow流程，doc-require需求文档，doc-prototype原型等等）（开发的时候建立doc分支，然后基于doc分支各自完善文档，最后整合回doc）
+
+(基于 main)架构分支 arch：维护项目架构（架构开发分支：arch-data，arch-class，arch-fight）
+
+(基于 arch)开发分支 dev：负责整合实现功能、更新架构修改
+
+(基于 dev)功能分支 feature：从开发分支中分离出来，实现某个功能的开发和管理，稳定后合并回 develop 分支
+
+(基于 dev、doc)版本发布分支 release：最新预发布版本的代码，用于发布前的测试和验证，稳定后合并到 main 和 develop 分支，然后删除预发布分支
+
+主要分支：main、doc、develop（长期存在）
 辅助分支：hotfix、feature、release（不定删除）
 
 
